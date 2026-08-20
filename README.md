@@ -43,7 +43,7 @@ XRAY_GITHUB_PROXY=direct bash install.sh
 - 自动化 TLS
 - 简化所有流程
 - 屏蔽 BT
-- 屏蔽中国 IP
+- 允许访问中国大陆和境外目标
 - 使用 API 操作
 - 兼容 Xray 命令
 - 强大的快捷参数
