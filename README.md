@@ -8,7 +8,7 @@
 ## 中国大陆安装
 
 ```bash
-bash <(wget -qO- "https://gh-proxy.com/https://raw.githubusercontent.com/gamesofts/Xray/main/install.sh")
+bash <(wget -qO- "https://gh-proxy.com/https://raw.githubusercontent.com/gamesofts/xray/main/install.sh")
 ```
 
 脚本默认按 `gh-proxy.com -> ghfast.top -> ghproxy.net -> GitHub 官方` 的顺序尝试，
