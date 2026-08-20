@@ -12,7 +12,8 @@ bash <(wget -qO- "https://gh-proxy.com/https://raw.githubusercontent.com/gamesof
 ```
 
 脚本默认按 `gh-proxy.com -> ghfast.top -> ghproxy.net -> GitHub 官方` 的顺序尝试，
-并对 Xray、脚本、规则库和 Caddy 的发布文件进行 SHA-256 校验。也可以指定自己的
+并对 Xray、规则库和 Caddy 的发布文件进行 SHA-256 校验；首次安装使用 `main`
+源码包，并在落盘前检查必要文件及 Shell 语法。也可以指定自己的
 GitHub 反向代理（推荐长期使用自建代理）：
 
 ```bash

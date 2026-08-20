@@ -257,16 +257,21 @@ download() {
         is_ok=$is_core_ok
         ;;
     sh)
-        link=https://github.com/${is_sh_repo}/releases/latest/download/code.zip
+        link=https://github.com/${is_sh_repo}/archive/refs/heads/main.zip
         name="$is_core_name 脚本"
         tmpfile=$tmpsh
         is_ok=$is_sh_ok
         ;;
     esac
 
-    checksum_suffix=.sha256
-    [[ $1 == core ]] && checksum_suffix=.dgst
-    if download_and_verify "$link" "$tmpfile" "$name" "$checksum_suffix"; then
+    if [[ $1 == sh ]]; then
+        # GitHub's dynamically generated branch archive has no stable sidecar
+        # checksum. Validate its required files and syntax after extraction.
+        github_download "$link" "$tmpfile" "$name"
+    else
+        download_and_verify "$link" "$tmpfile" "$name" .dgst
+    fi
+    if [[ $? == 0 ]]; then
         mv -f $tmpfile $is_ok
     fi
 }
@@ -474,7 +479,19 @@ main() {
     if [[ $local_install ]]; then
         cp -rf $PWD/* $is_sh_dir
     else
-        unzip -qo $is_sh_ok -d $is_sh_dir
+        sh_extract_dir=$tmpdir/sh-extract
+        mkdir -p "$sh_extract_dir"
+        unzip -qo $is_sh_ok -d "$sh_extract_dir"
+        sh_root=$(find "$sh_extract_dir" -mindepth 1 -maxdepth 1 -type d | head -n1)
+        [[ ! -f "$sh_root/xray.sh" || ! -f "$sh_root/src/core.sh" || ! -f "$sh_root/src/network.sh" ]] && {
+            msg err "脚本源码包结构校验失败."
+            exit_and_del_tmpdir
+        }
+        bash -n "$sh_root/install.sh" "$sh_root/xray.sh" "$sh_root"/src/*.sh || {
+            msg err "脚本源码包语法校验失败."
+            exit_and_del_tmpdir
+        }
+        cp -rf "$sh_root"/. $is_sh_dir
     fi
 
     # create core bin dir
