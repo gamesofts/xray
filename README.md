@@ -2,6 +2,38 @@
 
 最好用的 Xray 一键安装脚本 & 管理脚本
 
+> 本分支是面向中国大陆服务器（包括阿里云 ECS）的兼容版，基于
+> [233boy/Xray](https://github.com/233boy/Xray) 修改并保留原作者署名。
+
+## 中国大陆安装
+
+```bash
+bash <(wget -qO- "https://gh-proxy.com/https://raw.githubusercontent.com/gamesofts/Xray/main/install.sh")
+```
+
+脚本默认按 `gh-proxy.com -> ghfast.top -> ghproxy.net -> GitHub 官方` 的顺序尝试，
+并对 Xray、脚本、规则库和 Caddy 的发布文件进行 SHA-256 校验。也可以指定自己的
+GitHub 反向代理（推荐长期使用自建代理）：
+
+```bash
+export XRAY_GITHUB_PROXY="https://你的代理域名/"
+bash install.sh
+```
+
+安装时指定的代理会写入 `/etc/xray/network.env`，以后执行 `xray update` 时会继续使用。
+
+只使用 GitHub 官方地址：
+
+```bash
+XRAY_GITHUB_PROXY=direct bash install.sh
+```
+
+本版还将公网 IP 探测切换为 `ipw.cn`，域名解析检查切换为阿里云公共 DNS，
+并将脚本内 DNS 菜单的默认选项改为 AliDNS / DNSPod。公共 GitHub 加速服务是
+第三方服务，可能限速或失效；校验可以发现文件损坏或内容不一致，但不能替代对
+第三方代理的信任评估，因此生产环境建议使用你控制的反向代理或预下载后通过
+`--core-file` 本地安装。
+
 # 特点
 
 - 快速安装

@@ -1,29 +1,33 @@
 is_dns_list=(
+    223.5.5.5
+    119.29.29.29
+    https://dns.alidns.com/dns-query
+    https://doh.pub/dns-query
     1.1.1.1
     8.8.8.8
-    https://dns.google/dns-query
-    https://cloudflare-dns.com/dns-query
-    https://family.cloudflare-dns.com/dns-query
     set
     none
 )
 dns_set() {
     if [[ $1 ]]; then
         case ${1,,} in
-        11 | 1111)
+        223 | ali | alidns)
             is_dns_use=${is_dns_list[0]}
             ;;
-        88 | 8888)
+        119 | dnspod | tencent)
             is_dns_use=${is_dns_list[1]}
             ;;
-        gg | google)
+        alidoh)
             is_dns_use=${is_dns_list[2]}
             ;;
-        cf | cloudflare)
+        dohpub)
             is_dns_use=${is_dns_list[3]}
             ;;
-        nosex | family)
+        11 | 1111 | cloudflare)
             is_dns_use=${is_dns_list[4]}
+            ;;
+        88 | 8888 | google)
+            is_dns_use=${is_dns_list[5]}
             ;;
         set)
             if [[ $2 ]]; then
